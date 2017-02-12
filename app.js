@@ -136,7 +136,6 @@ app.get('/admin/update/:id',function (req,res) {
 /*删除电影*/
 app.delete('/admin/list',function (req,res) {
     var id = req.query.id;
-    console.log(id)
     if(id){
         Movie.remove({_id:id},function (err,movie) {
             if(err){
@@ -144,7 +143,6 @@ app.delete('/admin/list',function (req,res) {
             }else{
                 res.json({success:1})
             }
-
         })
     }
 })
