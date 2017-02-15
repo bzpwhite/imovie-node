@@ -1,4 +1,6 @@
 var Movie = require('../models/movie');
+var Comment = require('../models/comment');
+
 var _ = require('underscore');
 /*后台登陆页*/
 exports.new = function (req,res) {
@@ -100,12 +102,17 @@ exports.save = function (req,res) {
 exports.detail = function (req,res) {
     var id = req.params.id;
     Movie.findById(id,function (err,movie) {
-        if(err){
-            console.log(err)
-        }
-        res.render('detail',{
-            title:'imooc 详情页',
-            movie:movie
-        })
+        Comment
+            .find({movie:id})
+            .populate('from','name') //通过from 去找name
+            .populate('reply.from reply.to','name')
+            .exec(function (err,comments) {
+                console.log(comments)
+                res.render('detail',{
+                    title:'imooc 详情页',
+                    movie:movie,
+                    comments:comments
+                })
+            })
     })
 }

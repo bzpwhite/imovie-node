@@ -75,13 +75,12 @@ exports.signinRequired = function (req,res,next) {
     if(!user){
         return res.redirect('/signin')
     }
-    console.log('1111111111')
     next()
 }
 /*middleware for admin*/
 exports.adminRequired = function (req,res,next) {
     var user = req.session.user;
-    console.log(user.role)
+    console.log(user)
     if(user.role <= 10){
         return res.redirect('/signin')
     }
