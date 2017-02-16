@@ -1,21 +1,25 @@
 var Movie = require('../models/movie');
 var Comment = require('../models/comment');
+var Category = require('../models/category')
 
 var _ = require('underscore');
 /*后台登陆页*/
 exports.new = function (req,res) {
-    res.render('admin',{
-        title:'imooc 后台录入页',
-        movie: {
-            title:'',
-            doctor:'',
-            country:'',
-            year:'',
-            poster:'',
-            flash:'',
-            summary:'',
-            language:''
-        }
+    Category.find({},function (err,categories) {
+        res.render('admin',{
+            title:'imooc 后台录入页',
+            categories:categories,
+            movie: {
+                // title:'',
+                // doctor:'',
+                // country:'',
+                // year:'',
+                // poster:'',
+                // flash:'',
+                // summary:'',
+                // language:''
+            }
+        })
     })
 }
 /*admin update movie*/
@@ -23,12 +27,12 @@ exports.update = function (req,res) {
     var id = req.params.id;
     if(id){
         Movie.findById(id,function (err,movie) {
-            if(err){
-                console.log(err)
-            }
-            res.render('admin',{
-                title:'imooc 后台更新',
-                movie:movie
+            Category.find({},function (err,categories) {
+                res.render('admin',{
+                    title:'imooc 后台更新',
+                    movie:movie,
+                    categories:categories
+                })
             })
         })
     }
@@ -62,8 +66,10 @@ exports.list = function (req,res) {
 exports.save = function (req,res) {
     var id = req.body.movie._id;
     var movieObj = req.body.movie;
+    console.log(movieObj)
+    var _movie;
     /*先判断id是否存储过*/
-    if(id !== 'undefined'){
+    if(id){
         /*已经存储过的*/
         Movie.findById(id,function (err,movie) {
             if(err){
@@ -80,21 +86,19 @@ exports.save = function (req,res) {
         })
     }else{
         /*传入数据*/
-        _movie = new Movie({
-            title:movieObj.title,
-            doctor:movieObj.doctor,
-            country:movieObj.country,
-            year:movieObj.year,
-            language:movieObj.language,
-            poster:movieObj.poster,
-            summary:movieObj.summary,
-            flash:movieObj.flash
-        })
+        _movie = new Movie(movieObj)
         _movie.save(function (err,movie) {
             if(err){
                 console.log(err)
             }
-            res.redirect('/movie/'+movie._id)
+            var categoryId = movie.category;
+            Category.findOne(categoryId,function (err,category) {
+                console.log(category)
+                category.movies.push(movie._id);
+                category.save(function (err,category) {
+                    res.redirect('/movie/'+movie._id)
+                })
+            })
         })
     }
 }
@@ -107,7 +111,6 @@ exports.detail = function (req,res) {
             .populate('from','name') //通过from 去找name
             .populate('reply.from reply.to','name')
             .exec(function (err,comments) {
-                console.log(comments)
                 res.render('detail',{
                     title:'imooc 详情页',
                     movie:movie,

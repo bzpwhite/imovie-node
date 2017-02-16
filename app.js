@@ -16,7 +16,7 @@ mongoose.Promise = global.Promise;
 mongoose.connect(dbUrl);
 
 app.set('views','./app/views/pages')
-app.set('view engine', 'jade')
+app.set('view engine', 'pug')
 app.use(express.static(path.join(__dirname,'public')))
 app.set('port',port)
 app.use(bodyParser.json())

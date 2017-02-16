@@ -1,21 +1,9 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.Types.ObjectId;
-
-var MovieSchema = new Schema({
-    doctor:String,
-    title:String,
-    language:String,
-    country:String,
-    summary:String,
-    flash:String,
-    poster:String,
-    year:Number,
-    categoryName:String,
-    category:{
-        type:ObjectId,
-        ref:'Category'
-    },
+var categorySchema = new Schema({
+    name:String,
+    movies:[{type:ObjectId, ref:'Movie'}],
     meta:{
         createAt:{
             type:Date,
@@ -29,7 +17,7 @@ var MovieSchema = new Schema({
 })
 
 /*每次保存数据都会调用此方法*/
-MovieSchema.pre('save',function (next) {
+categorySchema.pre('save',function (next) {
     /*判断是否为新数据*/
     if(this.isNew){
         this.meta.createAt = this.meta.updateAt = Date.now();
@@ -39,7 +27,7 @@ MovieSchema.pre('save',function (next) {
     next();
 })
 
-MovieSchema.statics = {
+categorySchema.statics = {
     /*获取所有的数据*/
     fetch:function (cb) {
         return this
@@ -53,4 +41,4 @@ MovieSchema.statics = {
     }
 }
 
-module.exports = MovieSchema;
+module.exports = categorySchema;

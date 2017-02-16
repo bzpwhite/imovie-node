@@ -3,7 +3,7 @@ block content
     .container
         .row
             .col-md-7
-             embed(src="#{movie.flash}",allowFullScreen="true",quality="high",width="600",height="500",align="middle",type="application/x-shockwave-flash")
+             embed(src=movie.flash,allowFullScreen="true",quality="high",width="600",height="500",align="middle",type="application/x-shockwave-flash")
              .panel.panel-success(style="margin-bottom:200px")
                  .panel-heading
                      h3 评论区
@@ -21,23 +21,26 @@ block content
                                            .media
                                                .pull-left
                                                   img.media-object(style="width:32px;height:32px;")
-                                                  a.pull-right.comment(href="#comments",data-cid="#{item._id}",data-tid="#{reply.from._id}") 回复
+                                                  a.pull-right.comment(href="#comments",data-cid=item._id,data-tid=reply.from._id) 回复
                                                .media-body
                                                    h4.media-heading
                                                       | #{reply.from.name}
                                                       span.text-info &nbsp;回复&nbsp;
                                                       | #{reply.to.name}
                                                    p #{reply.content}
-                             a.pull-right.comment(href="#comments",data-cid="#{item._id}",data-tid="#{item.from._id}") 回复
+                             a.pull-right.comment(href="#comments",data-cid=item._id,data-tid=item.from._id) 回复
                  .panel-footer
                      #comments
                          form#commentForm(method="post",action="/user/comment")
-                             input(type="hidden",name="comment[movie]",value="#{movie._id}")
+                             input(type="hidden",name="comment[movie]",value=movie._id)
                              if user
-                                  input(type="hidden",name="comment[from]",value="#{user._id}")
-                             .form-group
-                                 textarea.form-control(name="comment[content]",row="3")
-                             button.btn.btn-default(type="submit") 提交
+                                 input(type="hidden",name="comment[from]",value=user._id)
+                                 .form-group
+                                     textarea.form-control(name="comment[content]",row="3")
+                                     button.btn.btn-default(type="submit") 提交
+                             else
+                                 a.navbar-link(href="/signin") 请登录后评论
+
             .col-md-5
                dl.dl-horizontal
                      dt 电影名字
