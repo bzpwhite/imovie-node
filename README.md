@@ -6,4 +6,5 @@
    express
    jade
    mongodb
-   underscore
+   underscore
+项目运行 ：node app
