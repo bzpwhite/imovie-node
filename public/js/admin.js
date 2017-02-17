@@ -24,12 +24,14 @@ $(function () {
                 type:'get',
                 dataType:'jsonp'
             }).done(function (data) {
+                var url = 'https://movie.douban.com/trailer/'+id+'/#content'
                 $('#inputTitle').val(data.title);
                 $('#inputDoctor').val(data.directors[0].name);
                 $('#inputCountry').val(data.countries[0]);
                 $('#inputPoster').val(data.images.small);
                 $('#inputYear').val(data.year);
                 $('#inputSummary').val(data.summary);
+                $('#inputFlash').val(url);
             })
         }
     })

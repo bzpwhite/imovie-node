@@ -66,7 +66,6 @@ exports.list = function (req,res) {
 exports.save = function (req,res) {
     var id = req.body.movie._id;
     var movieObj = req.body.movie;
-    console.log(movieObj)
     var _movie;
     /*先判断id是否存储过*/
     if(id){
@@ -81,24 +80,57 @@ exports.save = function (req,res) {
                 if(err){
                     console.log(err)
                 }
-                res.redirect('/movie/'+movie._id)
+                var categoryId = movie.category;
+                var categoryName = movie.categoryName;
+                if(categoryId){
+                    Category.findById(categoryId,function (err,category) {
+                        category.movies.push(movie._id);
+                        category.save(function (err,category) {
+                            res.redirect('/movie/'+movie._id)
+                        })
+                    })
+                }else if(categoryName){
+                    var category = new Category({
+                        name:categoryName,
+                        movies:[movie._id]
+                    })
+                    category.save(function (err,category) {
+                        movie.category = category._id;
+                        movie.save(function (err,movie) {
+                            res.redirect('/movie/'+movie._id)
+                        })
+                    })
+                }
             })
         })
     }else{
         /*传入数据*/
+        var categoryId = movieObj.category;
+        var categoryName = movieObj.categoryName;
         _movie = new Movie(movieObj)
         _movie.save(function (err,movie) {
             if(err){
                 console.log(err)
             }
-            var categoryId = movie.category;
-            Category.findOne(categoryId,function (err,category) {
-                console.log(category)
-                category.movies.push(movie._id);
-                category.save(function (err,category) {
-                    res.redirect('/movie/'+movie._id)
+            if(categoryId){
+                Category.findById(categoryId,function (err,category) {
+                    category.movies.push(movie._id);
+                    category.save(function (err,category) {
+                        res.redirect('/movie/'+movie._id)
+                    })
                 })
-            })
+            }else if(categoryName){
+                var category = new Category({
+                    name:categoryName,
+                    movies:[movie._id]
+                })
+                category.save(function (err,category) {
+                    movie.category = category._id;
+                    movie.save(function (err,movie) {
+                        res.redirect('/movie/'+movie._id)
+                    })
+                })
+            }
         })
     }
 }
