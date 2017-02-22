@@ -8,6 +8,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var mongoose = require('mongoose');
 var logger = require('morgan');
+var connectMultiparty = require('connect-multiparty');
 
 var MongoStore = require('connect-mongo')(session);
 var dbUrl = 'mongodb://localhost/imooc';
@@ -31,6 +32,7 @@ app.use(session({
         url:dbUrl
     })
 }))
+app.use(connectMultiparty()) //处理上传的文件
 app.listen(3000);
 
 /*设置报错信息*/

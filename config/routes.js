@@ -18,7 +18,7 @@ module.exports = function (app) {
     /*列表页*/
     app.get('/admin/list',User.signinRequired,User.adminRequired,Movie.list)
     /*admin post movie*/
-    app.post('/admin/movie/new',User.signinRequired,User.adminRequired,Movie.save)
+    app.post('/admin/movie/new',User.signinRequired,User.adminRequired,Movie.savePoster,Movie.save)
     /*后台登陆页*/
     app.get('/admin/movie',User.signinRequired,User.adminRequired,Movie.new)
     /*admin update movie*/
@@ -38,4 +38,6 @@ module.exports = function (app) {
     app.get('/admin/category',User.signinRequired,User.adminRequired,Category.new)
     app.post('/admin/category/new',User.signinRequired,User.adminRequired,Category.save)
     app.get('/admin/categorylist',User.signinRequired,User.adminRequired,Category.list)
+    /*result*/
+    app.get("/results",Index.search)
 }

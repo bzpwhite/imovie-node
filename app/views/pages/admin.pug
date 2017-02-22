@@ -2,7 +2,7 @@ extends ../layout
 block content
     .container
         .row
-            form.form-horizontal(method="post",action="/admin/movie/new",style="margin-bottom:200px;")
+            form.form-horizontal(method="post",action="/admin/movie/new",style="margin-bottom:200px;",enctype="multipart/form-data")
                 .form-group
                     label.col-md-2.control-label(for="douban") 豆瓣电影
                     .col-sm-10
@@ -42,6 +42,10 @@ block content
                     label.col-md-2.control-label(for="inputPoster") 海报地址
                     .col-sm-10
                         input#inputPoster.form-control(type="text",name="movie[poster]",value=movie.poster)
+                .form-group
+                    label.col-md-2.control-label(for="uploadPoster") 电影片源
+                    .col-sm-10
+                        input#uploadPoster.form-control(type="file",name="uploadPoster")
                 .form-group
                     label.col-md-2.control-label(for="inputFlash") 电影片源
                     .col-sm-10

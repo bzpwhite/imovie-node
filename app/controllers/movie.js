@@ -1,6 +1,8 @@
 var Movie = require('../models/movie');
 var Comment = require('../models/comment');
-var Category = require('../models/category')
+var Category = require('../models/category');
+var fs = require('fs');
+var path = require('path');
 
 var _ = require('underscore');
 /*后台登陆页*/
@@ -62,11 +64,36 @@ exports.list = function (req,res) {
         })
     })
 }
+/*文件是否上传完毕*/
+exports.savePoster = function (req,res,next) {
+    var posterData = req.files.uploadPoster;
+    var filePath = posterData.path;
+    var originalFilename = posterData.originalFilename;
+    if(originalFilename){
+        fs.readFile(filePath,function (err,data) {
+            var timestamp = Date.now();
+            var type = posterData.type.split('/')[1];
+            var poster = timestamp + '.' +type;
+            var newPath = path.join(__dirname,'../../','/public/upload/'+poster);
+            console.log(newPath);
+            fs.writeFile(newPath,data,function (err) {
+                req.poster = poster;
+                next();
+            })
+        })
+    }else{
+        next()
+    }
+}
 /*admin post movie*/
 exports.save = function (req,res) {
     var id = req.body.movie._id;
     var movieObj = req.body.movie;
     var _movie;
+    /*判断有没有上传海报*/
+    if(req.poster){
+        movieObj.poster = req.poster;
+    }
     /*先判断id是否存储过*/
     if(id){
         /*已经存储过的*/
