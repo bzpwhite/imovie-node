@@ -17,7 +17,7 @@
 后台电影列表:'localhost:3000/admin/list';<br/>
 	
 ####项目运行：
-   1.安装mongodb<br/>
-   2.连接mongodb  cmd   mongod.exe --dbpath d:\data\db<br/>
-   3.npm install <br/>
-   4.node app<br/>
+1.安装mongodb<br/>
+2.连接mongodb  cmd   mongod.exe --dbpath d:\data\db<br/>
+3.npm install <br/>
+4.node app<br/>
