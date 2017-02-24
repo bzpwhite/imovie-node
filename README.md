@@ -15,7 +15,9 @@
 登录:'localhost:3000/signin';<br/>
 注册:'localhost:3000/signup';<br/>
 后台电影列表:'localhost:3000/admin/list';<br/>
-	
+用户列表:'localhost:3000/admin/userlist';<br/>
+详情页:'localhost:3000/movie/:id'<br/>
+电影列表页:'localhost:3000/results?cat=id&p=0'<br/>
 ####项目运行：
 1.安装mongodb<br/>
 2.连接mongodb  cmd   mongod.exe --dbpath d:\data\db<br/>
