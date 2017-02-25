@@ -20,6 +20,6 @@
 电影列表页:'localhost:3000/results?cat=id&p=0'<br/>
 ####项目运行：
 1.安装mongodb<br/>
-2.连接mongodb  cmd   mongod.exe --dbpath d:\data\db<br/>
-3.npm install <br/>
+2.npm install <br/>
+3.连接mongodb  cmd   mongod.exe --dbpath d:\data\db<br/>
 4.node app<br/>
